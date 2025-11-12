@@ -1,0 +1,38 @@
+ %->8-----------Language-and-Document-Related-Packages----------8<-%
+ \usepackage[brazil]{babel}
+ \usepackage[utf8]{inputenc}
+ \usepackage[T1]{fontenc}
+ %->8------------------------------------------------------------8<-%
+
+ %->8-----------------Formatting-Related-Packages----------------8<-%
+ \usepackage[margin=1in]{geometry}
+ \usepackage{amsmath, amssymb, amsthm, cancel}
+ \usepackage{upquote}
+ \usepackage{indentfirst}
+ \usepackage{listings}
+ \usepackage{xcolor}
+ %->8------------------------------------------------------------8<-%
+
+ %->8----------Referencing-and-Figures-Related-Packages----------8<-%
+ \usepackage{graphicx}
+ \usepackage{float}
+ \usepackage{hyperref}
+ %->8------------------------------------------------------------8<-%
+
+ %->8--------------Referencing-and-Figures-Commands--------------8<-%
+ \graphicspath{{figures/}}
+ \usepackage{csquotes}
+ \usepackage[backend=biber]{biblatex}
+\addbibresource{repertoire.bib}
+ %->8------------------------------------------------------------8<-%
+
+ %->8------------------Formatting-Related-Macros-----------------8<-%
+ \newcommand{\excerpt}[4]{ % {phrase}{author}{font}{cite}
+   \vspace{25pt}
+   \begin{quote}
+      #1 \\[8pt] #2, \textit{#3} #4
+   \end{quote}
+   \vspace{25pt}
+ }
+ \newcommand{\nonport}[1]{\textit{#1}}
+ %->8------------------------------------------------------------8<-%

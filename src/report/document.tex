@@ -1,0 +1,77 @@
+
+\section*{Descrição}
+
+  O \nonport{dataset} selecionado, chamado ``Heart Failure Prediction Dataset'', contém $918$ observações com $12$ atributos cada a respeito de pacientes que contém ou não alguma doença cardíaca. Segundo a descrição do próprio repositório no portal \nonport{Kaggle}, onde o \nonport{dataset} está disponível, problemas cardíacos são a principal causa de morte no mundo, com uma estimativa de $17.9$ milhões de mortes todos os anos.
+
+  \excerpt{``People with cardiovascular disease or who are at high cardiovascular risk (due to the presence of one or more risk factors such as hypertension, diabetes, hyperlipidaemia or already established disease) need early detection and management wherein a machine learning model can be of great help.''}{Fedesoriano}{Heart Failure Prediction Dataset.}{\cite{fedesorianoheartfailure2021}}
+
+  Os atributos contidos no \nonport{dataset} são:
+
+  \begin{enumerate}
+    \item \texttt{Age}: Idade do paciente (Valor numérico);
+    \item \texttt{Sex}: Gênero do paciente (M: Male, F: Female);
+    \item \texttt{ChestPainType}: Tipo de dor no peito que o paciente sofre (TA: Typical Angina, ATA: Atypical Angina, NAP: Non-Anginal Pain, ASY: Asymptomatic);
+    \item \texttt{RestingBP}: Pressão arterial em repouso (Valor numérico);
+    \item \texttt{Cholesterol}: Colesterol do paciente (Valor numérico);
+    \item \texttt{FastingBS}: Alto (1) ou baixo (0) nível de glucose no sangue em jejum (Valor booleano);
+    \item \texttt{RestingECG}: Resultado do eletrocardiograma em repouso (Normal: Normal, ST: having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV), LVH: showing probable or definite left ventricular hypertrophy by Estes' criteria);
+    \item \texttt{MaxHR}: Maior valor de taxa de batimento cardíaco atingido (Valor numérico);
+    \item \texttt{ExerciseAngina}: Se o paciente sente (Y) ou não (N) dor no peito ao realizar exercício (Y: Yes, N: No);
+    \item \texttt{Oldpeak}: Rebaixamento do segmento ST observada em um eletrocardiograma (Valor numérico);
+    \item \texttt{ST\_Slope}: Comportamento de inclinação do segmento ST observada em um eletrocardiograma (Up: upsloping, Flat: flat, Down: downsloping);
+    \item \texttt{HeartDisease}: Índica presença (1) ou ausência (0) de doença cardíaca (Valor booleano) (nossa variável \nonport{target}).
+  \end{enumerate}
+
+  Primeiro, optamos por decompor os atributos \texttt{ChestPainType}, \texttt{RestingECG} e \texttt{ST\_Slope} em variáveis booleanas, permitindo seu uso adequado nos modelos de classificação. Essa transformação foi feita por meio do \nonport{One-hot Encoding}, de forma que os dados categóricos fossem convertidos em formato numérico sem introduzir viés algorítmico decorrente de codificações inadequadas, como a simples atribuição de valores inteiros sequenciais (por exemplo, de 1 a 4 em \texttt{ChestPainType}). Além disso, convertemos os atributos de classificação binária \texttt{Sex} e \texttt{ExerciseAngina} em valores numéricos $0$ e $1$ pelos mesmos motivos.
+
+\section*{Limpeza do Dataset}
+
+  Para a limpeza do \nonport{dataset}, por conta da usabilidade (uma métrica interna do \nonport{Kaggle} que descreve o quão bem os dados estão organizados e limpos para análise) do conjunto escolhido ser muito alta (10.0 pontos), os registros vieram todos sem espaços vazios, duplicatas e \texttt{NaN}, portanto não foi necessário a tomada de nenhuma ação para modificar valores indesejados. Ainda assim, para reforçar a integridade dos dados, rodamos três funções: \texttt{dataset.duplicated()} para verificar a existência de duplicatas nos dados, \texttt{dataset.isnull().any()} para verificar a existência de valores nulos nos dados e \texttt{dataset.dropna()} para remover quaisquer linhas que tivessem valores NaN em algum de seus atributos. Após a execução dessas funções, garantimos que o \nonport{dataset} já estava pronto para a próxima etapa.
+
+\section*{Histograma e Identificação de Outliers}
+
+  Em seguida, decidimos visualizar o histograma de cada variável (todas numéricas, mesmo que booleanas $0$ e $1$) para nos garantirmos que, de fato, os dados pareciam estar bem distribuídos de modo a termos um conjunto diverso de dados.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{hist.png}
+    \caption{Histograma das \nonport{features} do \nonport{dataset}.}
+  \end{figure}
+
+  Nossa primeira observação foi de que as variáveis binárias, em geral, estão bem distribuídas, com exceção daquelas geradas pelo processo de \nonport{One-hot encoding}, que, muitas das vezes, tenhamos uma distribuição curiosa em se tratando da quantidade de valores $0$ e $1$.
+
+  A respeito das variáveis numéricas, percebemos que os atributos \texttt{age}, \texttt{RestingBP}, \texttt{Choleste}- \texttt{rol} e \texttt{MaxHR} apresentam distribuições bem \emph{próximas} à uma gaussiana (o que aparenta ser um bom sinal).
+
+  O caso da variável \texttt{Cholesterol} é mais curioso. Cerca de $16\%$ das entradas do dataset estão com valor $0$ nessa variável, o que pode funcionar como \nonport{placeholder} para um valor que deveria ter sido medido e não foi ou algo parecido. Cogitamos remover essas ocorrências do dataset, porém, observamos que grande parte desses dados são pacientes que tem, de fato, alguma doença cardíaca. Com isso, decidimos, por agora, não trabalhar com essa variável e contactar a professora assim que possível para tirar a dúvida de qual é a melhor escolha a ser feita. Um professor, que não é da área de ciência de dados, mas sim de uma área adjacente, concordou com os integrantes do grupo que não trabalhar com essa variável é a melhor escolha a ser feita.
+
+  A variável numérica \texttt{Oldpeak}, em contraste com as outras, apresenta uma distribuição semelhante à uma exponencial, porém, discretizada.
+
+\section*{Remoção de Outliers}
+
+  Após visualização dos histogramas, conferimos que as variáveis \texttt{Cholesterol} e \texttt{RestingBP} apresentam ocorrências com valor zero, o que não faz sentido. O caso do \texttt{RestingBP} é pouco grave visto que essas ocorrências com valor 0 são apenas 8. Sendo assim, identificamos, pelo cálculo do $z-score$, que esses pacientes são \nonport{outliers} e, portanto, decidimos remover essas linhas do nosso conjunto de dados.
+
+  Poderíamos ter feito um processo semelhante às outras variáveis que aparentam ter distribuição gaussiana, mas acreditamos que isso faria com que estivéssemos colocando hipóteses desnecessárias em nosso conjunto de dados ao assumir que essas variáveis formalmente apresentam distribuição gaussiana.
+
+\section*{Seleção de Features}
+
+  Nessa etapa, antes mesmo de analisar as matrizes de correlação, foi decidido a remoção da coluna \texttt{Cholesterol}, pois havia diversos registros (em sua maioria, que apresentavam doença cardíaca) que estavam com valor de \texttt{Cholesterol} $0$ e simplesmente substituir pela média ou mediana, nesse caso, já que existiam mais de $100$ registros com esse problema, enviesaria muito os resultados (pois representa aproximadamente $10\%$ do tamanho do \nonport{dataset}). Dito isso, para os testes principais, não será utilizado essa coluna, mas em testes adicionais sim (para a análise da diferença de performance entre os conjuntos de dados diferentes).
+
+  Após essa decisão, foram montadas as matrizes de correlação para a análise da linearidade entre as próprias features (variáveis independentes) e entre as features e o \nonport{output} (variável dependente). A matriz de correlação de Pearson pode ser encontrada na imagem \ref{fig: pearson}, plotada como um \nonport{heatmap} para destaque dos números relevantes.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pearson.png}
+    \caption{Mapa de calor da matriz de correlação de Pearson.}
+    \label{fig: pearson}
+  \end{figure}
+
+  A matriz de correlação de Spearman pode ser encontrada na imagem \ref{fig: spearman}, também plotada como \nonport{heatmap}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{spearman.png}
+    \caption{Mapa de calor da matriz de correlação de Spearman.}
+    \label{fig: spearman}
+  \end{figure}
+
+  Pela análise das correlações, percebe-se que as features \texttt{ST\_Slope\_Up} e \texttt{ST\_Slope\_Flat} possuem forte correlação entre si e, por serem variáveis independentes, é indesejado esse comportamento. Portanto, uma delas será removida do \nonport{dataset} final. Outra análise válida é a baixíssima correlação entre as features \texttt{RestingECG\_LVH} e \texttt{RestingECG\_Normal} com a variável dependente, o que também é indesejável. Porém, nesse caso, não se sabe se é porque, de fato, a relação linear é baixa ou não é uma relação linear (mesmo utilizando o método de Spearman, ainda não se pode ter total certeza). Portanto, testes serão feitos nos quais, em alguns, essas colunas serão removidas e, em outros, não.
