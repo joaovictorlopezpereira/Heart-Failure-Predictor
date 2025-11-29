@@ -115,26 +115,30 @@
   Por fim, realizamos testes de hipótese de Wilcoxon para compararmos o desempenho dos modelos e assim reforçar as conclusões tomadas pela observação do histograma. Ao realizar o teste de Wilcoxon comparando a acurácia obtida nos testes realizados, obtivemos os seguintes resultados:
 
   \begin{verbatim}
-  >> hypothesis_test(knn_accuracy, perceptron_accuracy, "KNN", "Perceptron", 0.01)
+  >> hypothesis_test(knn_acc, perceptron_acc, "KNN",
+  "Perceptron", 0.01)
 
   p-value: 1.332349421224909e-18
   Com 99.0% de confiança,
-  Rejeita H0: O KNN, para esse problema, foi robusto frente ao Perceptron
+  Rejeita H0: O KNN, para esse problema, foi robusto frente ao
+  Perceptron
 
 
-  >> hypothesis_test(reglog_accuracy, knn_accuracy, "Reg. Log.", "KNN", 0.01)
+  >> hypothesis_test(reglog_acc, knn_acc, "Reg. Log.", "KNN",
+  0.01)
 
   p-value: 1.3306558357655154e-18
   Com 99.0% de confiança,
-  Rejeita H0: O Reg. Log., para esse problema, foi robusto frente ao KNN
+  Rejeita H0: O Reg. Log., para esse problema, foi robusto frente
+  ao KNN
   \end{verbatim}
 
   onde:
 
   \begin{itemize}
-  \item \texttt{knn\_accuracy} representa o vetor com as acurácias medidas do KNN;
-  \item \texttt{perceptron\_accuracy} representa o vetor com as acurácias medidas do Perceptron;
-  \item \texttt{reglog\_accuracy} representa o vetor com as acurácias medidas do Regressão Logística.
+  \item \texttt{knn\_acc} representa o vetor com as acurácias medidas do KNN;
+  \item \texttt{perceptron\_acc} representa o vetor com as acurácias medidas do Perceptron;
+  \item \texttt{reglog\_acc} representa o vetor com as acurácias medidas do Regressão Logística.
   \end{itemize}
 
   Com base nos resultados, podemos concluir que, de fato, o modelo de Regressão Logística, para esse teste, com os parâmetros e \nonport{features} selecionados, foi o mais robusto dentre os modelos testados.
