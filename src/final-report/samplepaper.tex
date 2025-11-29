@@ -21,6 +21,15 @@
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 \urlstyle{rm}
 %
+\newcommand{\nonport}[1]{\textit{#1}}
+\newcommand{\excerpt}[4]{ % {phrase}{author}{font}{cite}
+  \vspace{5pt}
+  \begin{quote}
+    #1 \\[8pt] #2, \textit{#3} #4
+  \end{quote}
+  \vspace{5pt}
+}
+%
 \begin{document}
 %
 \title{Predição de Problemas Cardíacos por Modelos de Classificação de Aprendizado de Máquina}
