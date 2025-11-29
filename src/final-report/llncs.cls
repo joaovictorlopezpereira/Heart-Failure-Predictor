@@ -79,7 +79,7 @@
 \def\switcht@albion{%
 \def\abstractname{Abstract.}
 \def\ackname{Acknowledgments.}
-\def\andname{and}
+\def\andname{e}
 \def\lastandname{\unskip, and}
 \def\appendixname{Appendix}
 \def\chaptername{Chapter}
@@ -88,7 +88,7 @@
 \def\contentsname{Table of Contents}
 \def\corollaryname{Corollary}
 \def\definitionname{Definition}
-\def\discintname{Disclosure of Interests.}
+\def\discintname{Declaração de Conflito de Interesses:}
 \def\examplename{Example}
 \def\exercisename{Exercise}
 \def\figurename{Fig.}
@@ -962,7 +962,7 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
           \typeout{a shorter form with \string\titlerunning\space prior to
                    \string\maketitle}%
           \global\setbox\titrun=\hbox{\small\rm
-          Title Suppressed Due to Excessive Length}%
+          Pereira, J.V.L., Albuquerque, Y.R..}%
        \fi
        \xdef\@title{\copy\titrun}%
     \fi
