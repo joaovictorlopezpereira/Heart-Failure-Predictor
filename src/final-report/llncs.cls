@@ -92,7 +92,7 @@
 \def\examplename{Example}
 \def\exercisename{Exercise}
 \def\figurename{Fig.}
-\def\keywordname{{\bf Keywords:}}
+\def\keywordname{{\bf Palavras-chave:}}
 \def\indexname{Index}
 \def\lemmaname{Lemma}
 \def\contriblistname{List of Contributors}
