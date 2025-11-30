@@ -1,11 +1,10 @@
 
-%  (incluindo a motivação para a realização do trabalho e qual o objetivo do trabalho)
-\section{Introdução} % Yuri
+\section{Introdução}
 
   O objetivo desse trabalho é comparar modelos de inteligência artificial e descobrir qual deles possui a maior performance quando treinados em cima de um \nonport{dataset} que contém dados de diversos pacientes que possuem, ou não, uma doença cardiovascular. Escolhemos esse tema pois, de acordo com a OMS, doenças cardíacas são a principal causa de morte no mundo, logo, queríamos utilizar o que foi aprendido para aplicar em um problema muito impactante globalmente na atualidade.
 
 
-\section{Descrição da Base e Preprocessamento} % João
+\section{Descrição da Base e Preprocessamento}
 
   A base de dados selecionada, chamada ``Heart Failure Prediction Dataset'', contém $918$ observações com $12$ atributos cada a respeito de pacientes que contém ou não alguma doença cardíaca. Segundo a descrição do próprio repositório no portal \nonport{Kaggle}, onde a base de dados está disponível, problemas cardíacos são a principal causa de morte no mundo, com uma estimativa de $17.9$ milhões de mortes todos os anos.\cite{fedesorianoheartfailure2021}
 
@@ -58,7 +57,7 @@
   Pela análise das correlações, percebe-se que as \nonport{features} \texttt{ST\_}\texttt{Slope\_Up} e \texttt{ST\_} \texttt{Slope\_Flat} possuem forte correlação entre si e, por serem variáveis independentes, é indesejado esse comportamento. Portanto, a segunda foi removida do \nonport{dataset} final. Outra análise válida é a baixíssima correlação entre as \nonport{features} \texttt{RestingECG\_LVH} e \texttt{RestingECG\_Normal} com a variável dependente, o que também é indesejável. Porém, nesse caso, não se sabe se é porque, de fato, a relação linear é baixa ou não é uma relação linear (mesmo utilizando o método de Spearman, ainda não se pode ter total certeza). Ainda assim, decidimos por eliminar ambas as \nonport{features} da base de dados.
 
 
-\section{Definição dos Métodos Usados e Justificativa para sua Utilização} % Yuri
+\section{Definição dos Métodos Usados e Justificativa para sua Utilização}
 
   Utilizamos, ao todo, três métodos:
   \begin{enumerate}
@@ -72,20 +71,21 @@
   Escolhemos esses métodos pois, além dos três serem algoritmos de classificação (objetivo do trabalho), são simples o suficiente para entendermos o funcionamento e foram dados inteiramente na disciplina.
 
 
-\section{Trabalhos Relacionados} % João
+\section{Trabalhos Relacionados}
 
   Após uma breve pesquisa por trabalhos relacionados que se utilizam da mesma base de dados que nós utilizamos, encontramos algumas postagens em portais \nonport{online} que obtiveram acurácia e \texttt{f1-score} bem semelhante ao nosso, mas nada que fosse consideralmente melhor ou pior.
 
-  Algo que percebemos foi que grande parte dessas postagens usaram diversos modelos --- assim como nós fizemos --- para obter seus resultados e julgar qual deles foi o melhor. Vários deles usaram modelos que não conhecemos o suficiente, como o \nonport{Gradient Boosting Classifier}, \nonport{SVM} e \nonport{Random Forest}.
+  Algo que percebemos foi que grande parte dessas postagens usaram diversos modelos --- assim como nós fizemos --- para obter seus resultados e julgar qual deles foi o mais robusto. Vários deles usaram modelos que não conhecemos o suficiente, como o \nonport{Gradient Boosting Classifier}, \nonport{SVM} e \nonport{Random Forest}.
 
 
-% (será avaliada a qualidade dos experimentos e não a quantidade)
-\section{Experimentos Realizados} % Yuri
+\section{Experimentos Realizados}
 
-  Separamos o \nonport{dataset} em 10 \nonport{folds} e rodamos 101 vezes os mesmos 10 \nonport{folds} para os três modelos, aleatorizando a ordem dos registros da tabela em cada uma das 101 iterações, guardando a média da acurácia e do \texttt{f1-score} de cada \nonport{fold} de cada iteração em um vetor. Após o treinamento, utilizamos testes de hipótese e plotamos gráficos de \nonport{boxplot} para avaliar a robustez dos modelos entre si. Para o teste de hipótese, realizamos o Teste de Wilcoxon visto que os dados utilizados para o treinamento dos modelos não são independentes (pois estamos utilizando o mesmo \nonport{fold} para o treinamento de cada modelo para evitar a criação de viés). Além disso, para todos os experimentos, usamos o KNN com um total de 7 vizinhos, a Regressão Logística com um total de 5000 iterações e o Perceptron com um total de 2000 iterações e $10^{-3}$ de tolerância.
+  Separamos o \nonport{dataset} em 10 \nonport{folds} e rodamos 101 vezes os mesmos 10 \nonport{folds} para os três modelos, aleatorizando a ordem dos registros da tabela em cada uma das 101 iterações, guardando a média da acurácia e do \texttt{f1-score} de cada \nonport{fold} de cada iteração em um vetor. Após o treinamento, utilizamos testes de hipótese e plotamos gráficos de \nonport{boxplot} para avaliar a robustez dos modelos entre si. Para o teste de hipótese, realizamos o Teste de Friedman visto que tinhamos três modelos e os dados eram pareados (pois estamos utilizando o mesmo \nonport{fold} para o treinamento de cada modelo para evitar a criação de viés). Após esse teste, realizamos como \nonport{Post hoc} o teste de Nemenyi para avaliar, par a par, se os resultados dos testes eram estatisticamente equivalentes ou não.
+
+  Além disso, para todos os experimentos, usamos o KNN com um total de 7, 9 e 11 vizinhos, a Regressão Logística com um total de 5000, 6000 e 7000 iterações e o Perceptron com um total de 2000, 3000 e 4000 iterações e $10^{-3}$ de tolerância. Após realizar os testes com as variações nos argumentos de cada algoritmo, observamos que não houve mudança significativa nos resultados alcançados, com isso, decidimos por utilizar o KNN com 7 vizinhos, a Regressão Logística com 5000 iterações e o Perceptron com 2000 iterações.
 
 
-\section{Discussão dos Resultados} % João e Yuri
+\section{Discussão dos Resultados}
 
   Os resultados que obtivemos foram, em média, após 101 iterações:
 
@@ -101,9 +101,9 @@
     \item \texttt{F1-score} médio da Regressão Logística: 0.861
   \end{enumerate}
 
-  Além disso, ao observar o histograma dos resultados obtidos, percebe-se que as métricas obtidas apresentam distribuição semelhante à uma curva normal, com o porém da variância obtida para cada uma delas ter sido diferente. A variância da Regressão Logística, em comparação com as demais, foi relativamente pequena, o que indica que o método não se mostrou sensível a depender do \nonport{fold} onde os treinos e testes foram realizados. Além disso, pela função de log-verossimilhança da Regressão Logística ser suave e apresentar ponto de máximo, métodos numéricos, como o gradiente descendente, encontram uma excelente aproximação pro seu ponto de máximo global, resultando em uma fronteira de decisão estável. Em contrapartida, as métricas do perceptron apresentaram variância relativamente alta em comparação com às métricas dos outros métodos, visto que o perceptron, que não funciona bem com dados não-linearmente separáveis, se mostrou bastante sensível aos dados de treino e teste.
+  Além disso, ao observar o histograma dos resultados alcançados, percebe-se que as métricas obtidas apresentam distribuição semelhante à uma curva normal, com o porém da variância obtida para cada uma delas ter sido diferente. A variância da Regressão Logística, em comparação com as demais, foi relativamente pequena, o que indica que o método não se mostrou sensível a depender do \nonport{fold} onde os treinos e testes foram realizados. Além disso, pela função de log-verossimilhança da Regressão Logística ser suave e apresentar ponto de máximo, métodos numéricos, como o gradiente descendente, encontram uma excelente aproximação pro seu ponto de máximo global, resultando em uma fronteira de decisão estável. Em contrapartida, as métricas do perceptron apresentaram variância relativamente alta em comparação com às métricas dos outros métodos, visto que o perceptron, que não funciona bem com dados não-linearmente separáveis, se mostrou bastante sensível aos dados de treino e teste.
 
-  Além disso, as métricas do KNN foram inferiores às métricas da Regressão Logística pois o algoritmo do KNN classifica de apenas de acordo com a distância euclidiana dos dados, sem considerar diferentes níveis de importância entre diferentes \nonport{features}, ou seja, se há uma relação linear monotônica entre as variáveis, essa relação é facilmente captada pela regressão logística, ao passo que não é captada pelo KNN.
+  Além disso, as métricas do KNN foram inferiores às métricas da Regressão Logística pois o algoritmo do KNN classifica apenas de acordo com a distância euclidiana dos dados, sem considerar diferentes níveis de importância entre diferentes \nonport{features}, ou seja, se há uma relação linear monotônica entre as variáveis, essa relação é facilmente captada pela regressão logística, ao passo que não é captada pelo KNN.
 
   \begin{figure}[H]
     \centering
@@ -112,25 +112,24 @@
     \label{fig: hist2}
   \end{figure}
 
-  Por fim, realizamos testes de hipótese de Wilcoxon para compararmos o desempenho dos modelos e assim reforçar as conclusões tomadas pela observação do histograma. Ao realizar o teste de Wilcoxon comparando a acurácia obtida nos testes realizados, obtivemos os seguintes resultados:
+  Por fim, rodamos o teste de hipótese de Friedman para garantir estatisticamente que, de fato, os modelos apresentam resultados diferentes. Após isso, realizamos como teste de \nonport{Post hoc} o teste de Nemenyi para visualizar quais dos modelos diferem entre si.
 
   \begin{verbatim}
-  >> hypothesis_test(knn_acc, perceptron_acc, "KNN",
-  "Perceptron", 0.01)
+  >> _, p_value = friedmanchisquare(knn_acc,
+                                    reglog_acc,
+                                    perceptron_acc)
+  >> print(p_value)
+    1.3685394711738522e-44
 
-  p-value: 1.332349421224909e-18
-  Com 99.0% de confiança,
-  Rejeita H0: O KNN, para esse problema, foi robusto frente ao
-  Perceptron
-
-
-  >> hypothesis_test(reglog_acc, knn_acc, "Reg. Log.", "KNN",
-  0.01)
-
-  p-value: 1.3306558357655154e-18
-  Com 99.0% de confiança,
-  Rejeita H0: O Reg. Log., para esse problema, foi robusto frente
-  ao KNN
+  >> data = np.column_stack([knn_acc,
+                             reglog_acc,
+                             perceptron_acc])
+  >> posthoc = sp.posthoc_nemenyi_friedman(data)
+  >> print(posthoc)
+                    0             1             2
+      0  1.000000e+00  3.574696e-12  3.574696e-12
+      1  3.574696e-12  1.000000e+00  0.000000e+00
+      2  3.574696e-12  0.000000e+00  1.000000e+00
   \end{verbatim}
 
   onde:
@@ -141,7 +140,9 @@
   \item \texttt{reglog\_acc} representa o vetor com as acurácias medidas do Regressão Logística.
   \end{itemize}
 
-  Com base nos resultados, podemos concluir que, de fato, o modelo de Regressão Logística, para esse teste, com os parâmetros e \nonport{features} selecionados, foi o mais robusto dentre os modelos testados.
+  Como esperado, obtivemos que todos os modelos apresentam resultados estatisticamente diferentes entre si. Ou seja, como podemos observar analisando as entradas da matriz, todos os pares de modelos apresentaram resultados diferentes, o que indica que, para todo par, existe um modelo que apresentou resultado mais robusto. Logo, existe um modelo mais robusto frente a todos os outros.
+
+  Com base nos resultados, observando as médias e distribuições das acurácias e \texttt{f1-score} obtidos, podemos concluir que, de fato, o modelo de Regressão Logística, para esse teste, com os parâmetros e \nonport{features} selecionados, foi o mais robusto dentre os modelos testados.
 
 
 \section{Conclusão}
